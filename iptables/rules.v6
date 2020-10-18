@@ -4,6 +4,6 @@
 :FORWARD ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 :sshguard - [0:0]
--A INPUT -j sshguard
+-A INPUT -p -tcp -m multiport --dports 22345 -j sshguard
 COMMIT
 # Completed on Sat Oct 17 19:56:14 2020
