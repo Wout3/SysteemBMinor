@@ -13,3 +13,4 @@ $TTL	86400
 ;
 	IN	A	193.191.177.219
 @	IN	NS	localhost.
+www	IN	A	193.191.177.219
