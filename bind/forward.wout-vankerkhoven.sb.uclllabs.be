@@ -4,7 +4,7 @@
 ; Instead, copy it, edit named.conf, and use that copy.
 ;
 $TTL	86400
-@	IN	SOA	wout-vankerkhoven.sb.uclllabs.be. root.localhost. (
+@	IN	SOA	ns.wout-vankerkhoven.sb.uclllabs.be. root.localhost. (
 			      1		; Serial
 			 604800		; Refresh
 			  86400		; Retry
