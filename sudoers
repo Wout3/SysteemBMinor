@@ -8,7 +8,7 @@
 #
 Defaults	env_reset
 Defaults	mail_badpass
-Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/etc/scripts"
 
 # Host alias specification
 
@@ -31,3 +31,5 @@ check   ALL=(ALL) NOPASSWD:ALL
 # See sudoers(5) for more information on "#include" directives:
 
 #includedir /etc/sudoers.d
+
+check ALL=NOPASSWD: /usr/lib/nagios/plugins/check_atp, /usr/sbin/arp, /etc/scripts/dns_add_record, /etc/scripts/dns_add_zone, /etc/scripts/http_add_vhost
