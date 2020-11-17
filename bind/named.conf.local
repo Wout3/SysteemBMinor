@@ -5,7 +5,12 @@
 // Consider adding the 1918 zones here, if they are not used in your
 // organization
 //include "/etc/bind/zones.rfc1918";
-zone "ns.wout-vankerkhoven.sb.uclllabs.be" {
+zone "wout-vankerkhoven.sb.uclllabs.be" {
  type master;
- file "/etc/bind/forward.wout-vankerkhoven.sb.uclllabs.be";
+ file "/etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be";
+};
+
+zone "phonkrit-vandevelde.sb.uclllabs.be"{
+        type slave;
+        masters {193.191.177.181; };
 };
