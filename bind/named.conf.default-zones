@@ -26,8 +26,3 @@ zone "255.in-addr.arpa" {
 	type master;
 	file "/etc/bind/db.255";
 };
-
-zone "wout-vankerkhoven.sb.uclllabs.be" {
-        type master;
-        file "/etc/bind/db.wout-vankerkhoven.sb.uclllabs.be";
-};
