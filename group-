@@ -57,3 +57,4 @@ systemd-coredump:x:999:
 check:x:1000:
 ntp:x:117:
 incron:x:118:
+bind:x:119:
