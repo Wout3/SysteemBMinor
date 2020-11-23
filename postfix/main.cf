@@ -9,6 +9,17 @@ append_dot_mydomain = no
 # Uncomment the next line to generate "delayed mail" warnings
 #delay_warning_time = 4h
 
+myhostname = mx.wout-vankerkhoven.sb.uclllabs.be
+mydomain = wout-vankerkhoven.sb.uclllabs.be
+myorigin = $mydomain
+smtp_bind_address = 193.191.177.219
+smtp_bind_address6 = 2001:6a8:2880:a077::db
+inet_interfaces = all
+inet_protocols = all
+mydestination = $myhostname, localhost.$mydomain, localhost
+smtpd_recipient_restrictions = permit_mynetworks
+home_mailbox = maildir/
+
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 mydestination = $myhostname, localhost.$mydomain, localhost
@@ -19,3 +30,24 @@ recipient_delimiter = +
 
 compatibility_level = 2
 
+config_directory = /etc/postfix
+dovecot_destination_recipient_limit = 1
+smtp_tls_security_level = may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtpd_tls_cert_file=/etc/letsencrypt/live/mail.example.com/fullchain.pem
+smtpd_tls_key_file=/etc/letsencrypt/live/mail.example.com/privkey.pem
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous, noplaintext
+smtpd_sasl_tls_security_options = noanonymous
+smtpd_tls_auth_only = yes
+smtpd_tls_security_level = may
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtpd_use_tls=yes
+
+# Virtual mail settings
+virtual_transport = dovecot
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+virtual_mailbox_domains = mysql:/etc/postfix/virtual-mailbox-domains.conf
+virtual_mailbox_maps = mysql:/etc/postfix/virtual-mailbox-users.conf
+virtual_alias_maps = mysql:/etc/postfix/virtual-alias-maps.conf
