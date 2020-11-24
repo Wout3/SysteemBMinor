@@ -12,3 +12,10 @@ else
   echo "subdomain not given"
   exit 0
 fi
+
+echo "" >> /etc/bind/named.conf.local
+echo "// $subdomain config"  >> /etc/bind/named.conf.local
+echo "zone $subdomain.wout-vankerkhoven.sb.uclllabs.be. {
+	type master;
+	file \"/etc/bind/zones/db.mrt.$subdomain.wout-vankerkhoven.sb.uclllabs.be\";
+};" >> /etc/bind/named.conf.local
