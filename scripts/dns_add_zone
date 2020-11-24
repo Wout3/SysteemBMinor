@@ -33,3 +33,11 @@ echo "\$TTL	300
 ; A records
 @	IN	A	193.191.177.219
 ns	IN	A	193.191.177.219" >> $(echo "/etc/bind/zones/db.$subdomain.wout-vankerkhoven.sb.uclllabs.be")
+
+echo "$subdomain       IN      NS      ns.wout-vankerkhoven.sb.uclllabs.be." >> /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
+
+old=$(grep "Serial" /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be | tr -s [:blank:] | cut -d ' ' -f 2)
+new=$((old + 1))
+sed -i "s/.*Serial.*/\t\t     $new ;Serial/g" /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
+
+
