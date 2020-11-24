@@ -40,4 +40,4 @@ old=$(grep "Serial" /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be | tr -s 
 new=$((old + 1))
 sed -i "s/.*Serial.*/\t\t     $new ;Serial/g" /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
 
-
+systemctl restart bind9
