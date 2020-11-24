@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# check if running as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit 0
+fi
+
+# get domain
+if [[ "$1" != "" ]]; then
+  domain="$1"
+else
+  echo "No domain given as first argument"
+  exit 0
+fi
+
+# sleep for sanity
+sleep 5
+
+response=$(dig +short $domain @1.1.1.1)
+# check if domain is alive/existing
+if [ "$response"  != "193.191.177.148" ]; then
+  echo "Domain: $domain does not exist"
+  exit 0
+fi
+
+# make virtual host config
+echo "<VirtualHost *:80>
+    ServerName $domain
+    DocumentRoot /var/www/$domain
+    ErrorLog \${APACHE_LOG_DIR}/$domain-error.log
+    CustomLog \${APACHE_LOG_DIR}/$domain-access.log combined
+</VirtualHost>" > $(echo "/etc/apache2/sites-available/$domain.conf")
+
+# make document root with index.html
+mkdir $(echo "/var/www/$domain")
+touch $(echo "/var/www/$domain/index.html")
+
+# append message to index.html
+echo "welcome $(echo "$domain" | cut -d '.' -f 1-2)" > $(echo "/var/www/$domain/index.html")
+
+# enable site and reload apache2
+a2ensite $1 > /dev/null
+systemctl reload apache2
