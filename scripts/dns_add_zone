@@ -19,3 +19,17 @@ echo "zone $subdomain.wout-vankerkhoven.sb.uclllabs.be. {
 	type master;
 	file \"/etc/bind/zones/db.mrt.$subdomain.wout-vankerkhoven.sb.uclllabs.be\";
 };" >> /etc/bind/named.conf.local
+
+echo "\$TTL	300
+@	IN	SOA	ns.$subdomain.wout-vankerkhoven.sb.uclllabs.be. admin.wout-vankerkhoven.sb.uclllabs.be. (
+			    001		; Serial
+			    300		; Refresh
+			    300		; Retry
+			2419200		; Expire
+			    300)	; Negative Cache TTL
+; Name servers
+@       IN      NS      ns.$subdomain.wout-vankerkhoven.sb.uclllabs.be.
+@       IN      NS      ns.wout-vankerkhoven.sb.uclllabs.be.
+; A records
+@	IN	A	193.191.177.219
+ns	IN	A	193.191.177.219" >> $(echo "/etc/bind/zones/db.$subdomain.wout-vankerkhoven.sb.uclllabs.be")
