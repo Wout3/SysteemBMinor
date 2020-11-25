@@ -1,44 +1,29 @@
-#!/bin/bash
+#! /bin/bash
+PREFIX="`echo $1 | awk -F . '{print $1}'`"
+SUBDOMAIN="`echo $1 | awk -F . '{print $2}'`"
 
-# check if running as root
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit 0
-fi
 
-# get domain
-if [[ "$1" != "" ]]; then
-  domain="$1"
+GREP=$(grep "$PREFIX[[:space:]]*IN[[:space:]]*A" /etc/bind/zones/mrt-zones/db.$SUBDOMAIN.wout-vankerkhoven.sb.uclllabs.be)
+if [ -z "$GREP" ];
+then
+echo "no such subdom or prefix"
 else
-  echo "No domain given as first argument"
-  exit 0
+        mkdir /var/www/html/$PREFIX.$SUBDOMAIN
+        touch /var/www/html/$PREFIX.$SUBDOMAIN/index.html
+        echo "$PREFIX.$SUBDOMAIN"
+        echo "welcome $PREFIX.$SUBDOMAIN" > /var/www/html/$PREFIX.$SUBDOMAIN/index.html
+
+        touch /etc/apache2/sites-available/$PREFIX.$SUBDOMAIN.conf
+        echo "<VirtualHost *:80>
+                ServerName $1
+                DocumentRoot /var/www/html/$PREFIX.$SUBDOMAIN
+                LogLevel info
+                ErrorLog "${APACHE_LOG_DIR}"/$PREFIX.$SUBDOMAIN-error.log
+                CustomLog "${APACHE_LOG_DR}"/$PREFIX.$SUBDOMAIN-access.log combined
+        </VirtualHost>" > /etc/apache2/sites-available/$PREFIX.$SUBDOMAIN.conf
+
+        a2ensite $PREFIX.$SUBDOMAIN.conf
+
+        systemctl reload apache2
 fi
 
-# sleep for sanity
-sleep 5
-
-response=$(dig +short $domain @1.1.1.1)
-# check if domain is alive/existing
-if [ "$response"  != "193.191.177.148" ]; then
-  echo "Domain: $domain does not exist"
-  exit 0
-fi
-
-# make virtual host config
-echo "<VirtualHost *:80>
-    ServerName $domain
-    DocumentRoot /var/www/$domain
-    ErrorLog \${APACHE_LOG_DIR}/$domain-error.log
-    CustomLog \${APACHE_LOG_DIR}/$domain-access.log combined
-</VirtualHost>" > $(echo "/etc/apache2/sites-available/$domain.conf")
-
-# make document root with index.html
-mkdir $(echo "/var/www/$domain")
-touch $(echo "/var/www/$domain/index.html")
-
-# append message to index.html
-echo "welcome $(echo "$domain" | cut -d '.' -f 1-2)" > $(echo "/var/www/$domain/index.html")
-
-# enable site and reload apache2
-a2ensite $1 > /dev/null
-systemctl reload apache2

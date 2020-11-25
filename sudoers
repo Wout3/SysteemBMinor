@@ -33,3 +33,8 @@ check   ALL=(ALL) NOPASSWD:ALL
 #includedir /etc/sudoers.d
 
 check ALL=NOPASSWD: /usr/lib/nagios/plugins/check_atp, /usr/sbin/arp, /etc/scripts/dns_add_record, /etc/scripts/dns_add_zone, /etc/scripts/http_add_vhost
+check wout-vankerkhoven = (root) NOPASSWD: /usr/lib/nagios/plugins/check_atp
+check wout-vankerkhoven = (root) NOPASSWD: /usr/sbin/arp
+check wout-vankerkhoven = (root) NOPASSWD: /etc/scripts/dns_add_record
+check wout-vankerkhoven = (root) NOPASSWD: /etc/scripts/dns_add_zone
+check wout-vankerkhoven = (root) NOPASSWD: /etc/scripts/http_add_vhost

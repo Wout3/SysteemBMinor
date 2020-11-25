@@ -1,6 +1,6 @@
 $TTL    1
 @    IN    SOA    wout-vankerkhoven.sb.uclllabs.be. hostmaster.wout-vankerkhoven.sb.uclllabs.be. (
-         2020103010        ; Serial
+         2020103020        ; Serial
                 301        ; Refresh
               86400        ; Retry
             2419200        ; Expire
@@ -41,3 +41,6 @@ supersecure.wout-vankerkhoven.sb.uclllabs.be.   IN      CAA     0 iodef "mailto:
 ; CAA records
 @	IN	CAA	0 issue "letsencrypt.org"
 @	IN	CAA	0 iodef "mailto:wout.vankerkhoven@student.ucll.be"
+
+subzoneameic7	IN	NS	ns.wout-vankerkhoven.sb.uclllabs.be.
+subzoneameic7	IN	A	193.191.177.219

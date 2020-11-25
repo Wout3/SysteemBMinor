@@ -1,43 +1,36 @@
-#!/bin/bash
-
-#check root
-if [ "$EUID" -ne 0 ]
-  then echo "not root"
-  exit 0
+#! /bin/sh
+if [ ! $(sudo echo 0) ]; then
+	echo "use sudo"
+	exit 1
 fi
 
-if [[ "$1" != "" ]]; then
-  subdomain="$1"
-else
-  echo "subdomain not given"
-  exit 0
+if [ $# -eq 0 ]; then
+	echo "Give arguments"
+	exit 1
 fi
 
-echo "" >> /etc/bind/named.conf.local
-echo "// $subdomain config"  >> /etc/bind/named.conf.local
-echo "zone $subdomain.wout-vankerkhoven.sb.uclllabs.be. {
+echo "zone \"$1.wout-vankerkhoven.sb.uclllabs.be\" {
 	type master;
-	file \"/etc/bind/zones/db.mrt.$subdomain.wout-vankerkhoven.sb.uclllabs.be\";
-};" >> /etc/bind/named.conf.local
+	file \"/etc/bind/zones/mrt-zones/db.$1.wout-vankerkhoven.sb.uclllabs.be\";
+};" >> /etc/bind/named.conf.mrt-zones
 
-echo "\$TTL	300
-@	IN	SOA	ns.$subdomain.wout-vankerkhoven.sb.uclllabs.be. admin.wout-vankerkhoven.sb.uclllabs.be. (
-			    001		; Serial
-			    300		; Refresh
-			    300		; Retry
-			2419200		; Expire
-			    300)	; Negative Cache TTL
-; Name servers
-@       IN      NS      ns.$subdomain.wout-vankerkhoven.sb.uclllabs.be.
-@       IN      NS      ns.wout-vankerkhoven.sb.uclllabs.be.
-; A records
-@	IN	A	193.191.177.219
-ns	IN	A	193.191.177.219" >> $(echo "/etc/bind/zones/db.$subdomain.wout-vankerkhoven.sb.uclllabs.be")
+touch /etc/bind/zones/mrt-zones/db.$1.wout-vankerkhoven.sb.uclllabs.be
 
-echo "$subdomain       IN      NS      ns.wout-vankerkhoven.sb.uclllabs.be." >> /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
+echo "\$TTL 300
+@ IN SOA ns.$1.wout-vankerkhoven.sb.uclllabs.be. host.wout-vankerkhoven.sb.uclllabs.be. (
+	1 ; Serial
+	900 ; Refresh
+	120 ; Retry
+	900 ; Expire
+	300 ) ; Default TTL
+; NAME SERVERS
+@	IN	NS ns.wout-vankerkhoven.sb.uclllabs.be." > /etc/bind/zones/mrt-zones/db.$1.wout-vankerkhoven.sb.uclllabs.be
 
-old=$(grep "Serial" /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be | tr -s [:blank:] | cut -d ' ' -f 2)
-new=$((old + 1))
-sed -i "s/.*Serial.*/\t\t     $new ;Serial/g" /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
+echo "$1	IN	NS	ns.wout-vankerkhoven.sb.uclllabs.be." >> /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
+echo "$1	IN	A	193.191.177.219" >> /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
 
-systemctl restart bind9
+perl -i -pe '/Serial/ && s/(\d+)/$1+1 . $2/e' /etc/bind/zones/db.wout-vankerkhoven.sb.uclllabs.be
+
+systemctl restart bind9.service
+rndc reload
+

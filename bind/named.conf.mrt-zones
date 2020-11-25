@@ -1,1 +1,36 @@
-$
+zone "subzoneze7igh.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzoneze7igh.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzoneieh7ie.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzoneieh7ie.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzoneish4ta.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzoneish4ta.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzonepu6aaz.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzonepu6aaz.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzonepho1em.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzonepho1em.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzoneinief8.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzoneinief8.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzoneyuth9i.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzoneyuth9i.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzonenaer9o.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzonenaer9o.wout-vankerkhoven.sb.uclllabs.be";
+};
+zone "subzoneameic7.wout-vankerkhoven.sb.uclllabs.be" {
+	type master;
+	file "/etc/bind/zones/mrt-zones/db.subzoneameic7.wout-vankerkhoven.sb.uclllabs.be";
+};
